@@ -60,9 +60,10 @@ module.exports = (app) => {
 //GET: search route that gets the searched items
 app.get('/search', (req, res) => {
   const term = new RegExp(req.query.term, 'i');
+  const page = req.query.page || 1;
   //find pet based on term 
-  Pet.find( { $or: [{ name: term }, { species: term }] } ).exec((err, pets) => {
-    res.render('pets-index', { pets: pets })
+  Pet.paginate( { $or: [{ name: term }, { species: term }] }, { page: page } ).then((results) => {
+    res.render('pets-index', { pets: results.docs, pagesCount: results.pages, currentPage: page })
   })
 
 });
