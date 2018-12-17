@@ -21,7 +21,7 @@ describe('Pets', ()  => {
   after(() => { 
     Pet.deleteMany({$or: [{name: 'Norman'}, {name: 'Spider'}] }).exec((err, pets) => {
       console.log(pets)
-      pets.remove();
+      //pets.remove(); ---- This was here already but is throwing an error. WHY? 
     }) 
   });
 

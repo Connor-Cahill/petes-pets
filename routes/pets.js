@@ -6,7 +6,7 @@ module.exports = (app) => {
 
   // INDEX PET => index.js
 
-  // NEW PET
+  // GET: renders the create PET form page
   app.get('/pets/new', (req, res) => {
     res.render('pets-new');
   });
@@ -24,14 +24,14 @@ module.exports = (app) => {
       }) ;
   });
 
-  // SHOW PET
+  // GET: renders pets-show and shows a single pet 
   app.get('/pets/:id', (req, res) => {
     Pet.findById(req.params.id).exec((err, pet) => {
       res.render('pets-show', { pet: pet });
     });
   });
 
-  // EDIT PET
+  // GET: gets the EDIT PET Form 
   app.get('/pets/:id/edit', (req, res) => {
     Pet.findById(req.params.id).exec((err, pet) => {
       res.render('pets-edit', { pet: pet });
@@ -55,4 +55,17 @@ module.exports = (app) => {
       return res.redirect('/')
     });
   });
+
+/////SEARCH FEATURE
+//GET: search route that gets the searched items
+app.get('/search', (req, res) => {
+  const term = new RegExp(req.query.term, 'i');
+  //find pet based on term 
+  Pet.find( { $or: [{ name: term }, { species: term }] } ).exec((err, pets) => {
+    res.render('pets-index', { pets: pets })
+  })
+
+});
+
+
 }

@@ -35,13 +35,15 @@ require('./routes/index.js')(app);
 require('./routes/pets.js')(app);
 
 // catch 404 and forward to error handler
+///404 page not found error handler. This is a middle ware the will produce a 404 if the page is not found
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-// error handler
+// error handler -- Creates an error handling middleware that will send the error message with res.locals to the rendered view
+//Only sends errors in development not production
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
